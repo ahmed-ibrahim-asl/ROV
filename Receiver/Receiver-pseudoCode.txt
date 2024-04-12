@@ -1,0 +1,59 @@
+// Pseudo Code for NRF24L01+ Radio Communication and Motor Control System
+
+// Initialize necessary libraries and configurations
+Include Libraries: RH_NRF24, SystemConfig, SPI
+Define Constants for timeout, message length, ADC settings, PWM settings, and radio settings
+
+// Define global variables for system operation
+Global Variables:
+    NRF24 radio object
+    Timing variables for timeouts
+    Buffers for message transmission and reception
+    Variables for battery voltage and percentage
+
+// Setup function initializes hardware and communication settings
+FUNCTION setup
+    Initialize serial communication
+    Initialize and configure radio communication
+    Setup PWM for motor control
+    Configure motor pins as OUTPUT
+
+// Main operational loop of the system
+FUNCTION loop
+    WHILE TRUE DO
+        Call MeasureBatteryVoltage
+        Check for incoming radio messages
+        IF message received THEN
+            Process received message
+            Send battery status as acknowledgment
+        ELSE IF timeout THEN
+            Indicate timeout and reset controls
+        END IF
+        Delay briefly to manage loop timing
+    END WHILE
+
+// Subroutine to measure and calculate battery voltage and percentage
+FUNCTION MeasureBatteryVoltage
+    FOR multiple readings DO
+        Read battery voltage
+        Calculate average voltage
+    END FOR
+    Convert average voltage to battery percentage
+
+// Subroutine to process incoming radio messages and update motor control
+FUNCTION ProcessReceivedMessage
+    Extract motor control values from message
+    IF command related to movement THEN
+        Decode and execute movement commands
+        Set motor directions and speeds using PWM
+    END IF
+
+// Handling different movement commands
+FUNCTION DecodeMovementCommands(command)
+    CASE command OF
+        'Forward': Set all motors to move forward at specified speed
+        'Backward': Set all motors to move backward
+        'Right': Configure motors for rightward movement
+        'Left': Configure motors for leftward movement
+    END CASE
+

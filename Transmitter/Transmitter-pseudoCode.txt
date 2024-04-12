@@ -1,0 +1,70 @@
+// Pseudo Code for NRF24L01+ Radio Communication and ESP32 WiFi Setup
+
+// Initialize necessary libraries and configurations
+Include Libraries: RH_NRF24, WiFi, SPI
+Define Constants:
+    WiFi credentials (SSID and password)
+    WiFi server port number
+    Serial communication speed
+    NRF24 pin configuration (CS and CE pins)
+    Radio channel and data rate settings
+    Radio transmit power settings
+    Message length and timeout settings
+
+// Define global variables for system operation
+Global Variables:
+    WiFi server object
+    NRF24 radio object
+    Buffers for transmitting and receiving messages
+    Timing and status variables
+
+// Setup function initializes hardware and communication settings
+FUNCTION setup
+    Initialize serial communication at defined baud rate
+    Configure WiFi as an access point with SSID and password
+    Start WiFi server on defined port
+    Initialize and configure radio (NRF24) with channel, data rate, and transmit power
+    Display network details on serial monitor
+
+// Main operational loop of the system
+FUNCTION loop
+    WHILE TRUE DO
+        Check for new WiFi client connections
+        IF no new client THEN
+            Check if a timeout has occurred since last radio activity
+            IF timeout THEN
+                Send a default "stop" message via radio
+                Attempt to receive radio acknowledgment
+            END IF
+        ELSE
+            Read and process commands from WiFi client
+            Update controls based on received commands
+            Send command acknowledgments back to client via WiFi
+            Transmit updated control signals via radio
+        END IF
+        Delay briefly to manage loop timing
+    END WHILE
+
+// Subroutine to handle WiFi client commands
+FUNCTION ProcessClientCommands(client)
+    Read data from client
+    Parse command (e.g., "Forward", "Backward", "Stop")
+    Update global command buffers for radio transmission
+    Respond to client with HTTP status
+
+// Handling movement commands and radio transmission
+FUNCTION TransmitRadioCommands
+    IF movement command THEN
+        Update radio buffer with command
+        Transmit command via NRF24 radio
+        Wait for and process acknowledgment
+    END IF
+
+// Function to receive and process radio acknowledgment
+FUNCTION ReceiveRadioAck
+    Receive message from radio
+    IF acknowledgment received THEN
+        Update system status
+    ELSE
+        Handle timeout or error conditions
+    END IF
